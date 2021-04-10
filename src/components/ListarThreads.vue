@@ -1,37 +1,37 @@
 <template>
   <div class="Threads">
     <div class="titulo">
-      <div align="right" style="margin-top:5%"> 
+      <div align="right" style="margin-top:5%">
         <a href="/#/Thread" class="botao"><font size="3" color="black">New Thread</font></a>
       </div>
       <div align="left"><font size="4"><b>Forum</b></font></div>
-    </div> 
-    <div class="threads" align="left">  
-      <table style="border-collapse: collapse;">  
+    </div>
+    <div class="threads" align="left">
+      <table style="border-collapse: collapse;">
         <tr v-for="(perc,index) in dados" :key="index" >
           <th class="bord" width="50%" align="left"><router-link :to="{ name: 'Detalhes', params: {codigo: perc.codigo}}"><font color=grey>{{perc.titulo}}</font></router-link></th>
           <th class="bord" width="10%" align="center"><router-link :to="{ name: 'Detalhes', params: {codigo: perc.codigo}}"><font size=2>details</font></router-link></th>
           <th class="bord" width="10%" align="left"><router-link :to="{ name: 'Detalhes', params: {codigo: perc.codigo}}"><font size=2 color=black><b>{{perc.respostas}} replies</b></font></router-link></th>
-        </tr> 
+        </tr>
       </table>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'axios'
 export default {
   name: 'Threads',
-  data(){
-    return{
-      dados:[]
+  data () {
+    return {
+      dados: []
     }
   },
-  created: function(){
-    axios.get("https://tarefa-backend.herokuapp.com/listarthreads").then(res=>{
-      this.dados=res.data;
+  created: function () {
+    axios.get('https://tarefa-backend.herokuapp.com/listarthreads').then(res => {
+      this.dados = res.data
       console.log(res)
-    }).catch(error=>console.log(error));
+    }).catch(error => console.log(error))
   }
 }
 </script>
@@ -57,7 +57,7 @@ a {
   border:1px solid black;
   max-width: 400px;
     margin-left: auto;
-    margin-right: auto; 
+    margin-right: auto;
     padding: 10px 50px 10px 50px ;
 }
 .botao{

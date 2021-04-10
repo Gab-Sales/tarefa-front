@@ -5,9 +5,9 @@
 </template>
 
 <script>
-import  Detalhes  from '../components/Detalhes.vue'
+import Detalhes from '../components/Detalhes.vue'
 export default {
-  components:{
+  components: {
     Detalhes
   }
 }

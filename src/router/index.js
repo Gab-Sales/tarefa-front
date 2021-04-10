@@ -3,7 +3,6 @@ import Threads from '../views/Threads.vue'
 import Thread from '../views/Thread.vue'
 import Detalhes from '../views/Detalhes.vue'
 
-
 const routes = [
   {
     path: '/',
@@ -13,12 +12,12 @@ const routes = [
   {
     path: '/Thread',
     name: 'Thread',
-    component:Thread
+    component: Thread
   },
-    {
+  {
     path: '/Detalhes/:codigo',
     name: 'Detalhes',
-    component:Detalhes
+    component: Detalhes
   }
 ]
 

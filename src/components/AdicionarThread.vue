@@ -7,7 +7,7 @@
         <br>
         <br>
         <form @submit.prevent="salvar">
-        <table>       
+        <table>
           <tr>
             <td><input type="text" placeholder="Title:" v-model="dados.titulo"></td>
           </tr>
@@ -18,32 +18,32 @@
             <td><input type="text" placeholder="Your name:"  v-model="dados.nome"></td>
             <td><input type="submit" class="btn" value="Create"></td>
           </tr>
-         
+
         </table>
          </form>
       </div>
     </div>
-    
+
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'axios'
 export default {
   name: 'Threads',
-  data(){
-    return{
-      dados:{titulo:'',conteudo:'',nome:''}
+  data () {
+    return {
+      dados: { titulo: '', conteudo: '', nome: '' }
     }
   },
-  methods:{
-    salvar(){
-     axios.post("https://tarefa-backend.herokuapp.com/CriarThread",this.dados).then(res=>{
-       console.log(res)
-       this.$router.push('/');
-     }).catch(error=>console.log(error))
+  methods: {
+    salvar () {
+      axios.post('https://tarefa-backend.herokuapp.com/CriarThread', this.dados).then(res => {
+        console.log(res)
+        this.$router.push('/')
+      }).catch(error => console.log(error))
+    }
   }
-  } 
 }
 </script>
 
@@ -53,7 +53,7 @@ export default {
   border:1px solid black;
   max-width: 400px;
   margin-left: auto;
-  margin-right: auto; 
+  margin-right: auto;
   padding: 30px 50px 10px 50px ;
 }
 .tarea{

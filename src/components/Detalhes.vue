@@ -13,7 +13,7 @@
         <td colspan="2" align="left"><font size="2">Created in {{perc.dataformatada}}</font></td>
         <td colspan="2" align="right" style="width:600px"><button v-on:click="deletarThread">Deletar</button></td>
       </tr>
-      </div> 
+      </div>
     </table>
     <hr>
     <div  align="left">
@@ -24,11 +24,11 @@
          <th align="left">{{perc.nome}}:</th>
        </tr>
        <tr>
-         <td align="left" style="width:700px">{{perc.resposta}}</td>           
+         <td align="left" style="width:700px">{{perc.resposta}}</td>
          <td ><input type="button" v-on:click="deletarThreadResp(perc.Codigo)" value="Deletar"></td>
        </tr>
        <tr>
-         <td align="left" colspan="2" style="width:700px"><font size="2">Created in {{perc.dataformatada}}</font></td>           
+         <td align="left" colspan="2" style="width:700px"><font size="2">Created in {{perc.dataformatada}}</font></td>
        </tr>
        <hr>
       </div>
@@ -39,7 +39,7 @@
     <div align="left">
     <span><b>Reply:</b></span>
     <form @submit.prevent="salvar">
-        <table style="width:100%">       
+        <table style="width:100%">
           <tr>
             <td colspan="2" ><textarea required v-model="replies.resposta" class="tarea" placeholder="Here is a some text input.&#10;&#10;&#10;Here is another paragraph of input" ></textarea></td>
           </tr>
@@ -47,7 +47,7 @@
             <td width="50%"><input required type="text" placeholder="Your name:"  v-model="replies.nome"></td>
             <td><input type="submit" class="btn" value="Create"></td>
           </tr>
-         
+
         </table>
     </form>
     </div>
@@ -62,54 +62,53 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'axios'
 export default {
   name: 'Detalhes',
-  data(){
-    return{
-      dados:{},
-      dadosrep:[{}],
-      replies:{thread:this.$route.params.codigo,resposta:'',nome:''},
-      delt:{cod:''}
+  data () {
+    return {
+      dados: {},
+      dadosrep: [{}],
+      replies: { thread: this.$route.params.codigo, resposta: '', nome: '' },
+      delt: { cod: '' }
     }
   },
-  methods:{
-    salvar(){
-    axios.post("https://tarefa-backend.herokuapp.com/ResponderThread",this.replies).then(res=>{
-       console.log(res)
-       axios.get("https://tarefa-backend.herokuapp.com/RespostasThread/"+this.$route.params.codigo).then(res=>{
-        this.dadosrep=res.data;
-        console.log(this.dadosrep);
-        this.replies.resposta='';
-       this.replies.nome=''
-      }).catch(error=>console.log(error))
-       
-     }).catch(error=>console.log(error))
-    },
-    deletarThread(){
-      axios.delete("https://tarefa-backend.herokuapp.com/DeleteThread/"+this.$route.params.codigo).then(res=>{
+  methods: {
+    salvar () {
+      axios.post('https://tarefa-backend.herokuapp.com/ResponderThread', this.replies).then(res => {
         console.log(res)
-        this.$router.push('/');
-      }).catch(error=>console.log(error))
+        axios.get('https://tarefa-backend.herokuapp.com/RespostasThread/' + this.$route.params.codigo).then(res => {
+          this.dadosrep = res.data
+          console.log(this.dadosrep)
+          this.replies.resposta = ''
+          this.replies.nome = ''
+        }).catch(error => console.log(error))
+      }).catch(error => console.log(error))
     },
-    deletarThreadResp(par){
-      axios.delete("https://tarefa-backend.herokuapp.com/DeleteThreadResp/"+par).then(res=>{
+    deletarThread () {
+      axios.delete('https://tarefa-backend.herokuapp.com/DeleteThread/' + this.$route.params.codigo).then(res => {
         console.log(res)
-        axios.get("https://tarefa-backend.herokuapp.com/RespostasThread/"+this.$route.params.codigo).then(res=>{
-        this.dadosrep=res.data;
-        }).catch(error=>console.log(error));
-      }).catch(error=>console.log(error))
+        this.$router.push('/')
+      }).catch(error => console.log(error))
     },
-    },
-    created: function t(){
-      axios.get("https://tarefa-backend.herokuapp.com/DetalharThread/"+this.$route.params.codigo).then(res=>{
-      this.dados=res.data;
-      }).catch(error=>console.log(error));
-      axios.get("https://tarefa-backend.herokuapp.com/RespostasThread/"+this.$route.params.codigo).then(res=>{
-      this.dadosrep=res.data;
-      console.log(this.dadosrep);
-      }).catch(error=>console.log(error));   
+    deletarThreadResp (par) {
+      axios.delete('https://tarefa-backend.herokuapp.com/DeleteThreadResp/' + par).then(res => {
+        console.log(res)
+        axios.get('https://tarefa-backend.herokuapp.com/RespostasThread/' + this.$route.params.codigo).then(res => {
+          this.dadosrep = res.data
+        }).catch(error => console.log(error))
+      }).catch(error => console.log(error))
     }
+  },
+  created: function t () {
+    axios.get('https://tarefa-backend.herokuapp.com/DetalharThread/' + this.$route.params.codigo).then(res => {
+      this.dados = res.data
+    }).catch(error => console.log(error))
+    axios.get('https://tarefa-backend.herokuapp.com/RespostasThread/' + this.$route.params.codigo).then(res => {
+      this.dadosrep = res.data
+      console.log(this.dadosrep)
+    }).catch(error => console.log(error))
+  }
 }
 
 </script>
@@ -118,7 +117,7 @@ export default {
   border:1px solid black;
   max-width: 400px;
   margin-left: auto;
-  margin-right: auto; 
+  margin-right: auto;
   padding: 10px 50px 10px 50px ;
 }
 .tarea{

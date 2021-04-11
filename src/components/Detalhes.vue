@@ -34,6 +34,11 @@
       </div>
     </table>
     </div>
+    <table>
+      <tr>
+        <td v-for="(perc,index) in paginate" :key="index"><button v-on:click="mudarpagina(perc)">{{perc}}</button></td>
+      </tr>
+    </table>
     <br>
 
     <div align="left">
@@ -70,18 +75,20 @@ export default {
       dados: {},
       dadosrep: [{}],
       replies: { thread: this.$route.params.codigo, resposta: '', nome: '' },
-      delt: { cod: '' }
+      delt: { cod: '' },
+      paginate: {}
     }
   },
   methods: {
     salvar () {
       axios.post('https://tarefa-backend.herokuapp.com/ResponderThread', this.replies).then(res => {
         console.log(res)
-        axios.get('https://tarefa-backend.herokuapp.com/RespostasThread/' + this.$route.params.codigo).then(res => {
-          this.dadosrep = res.data
-          console.log(this.dadosrep)
-          this.replies.resposta = ''
-          this.replies.nome = ''
+        axios.get('https://tarefa-backend.herokuapp.com/RespostasThread/' + this.$route.params.codigo + '/1').then(res => {
+          this.dadosrep = res.data[0].dados
+          this.paginate = {}
+          for (var i = 0; i < res.data[0].paginate; i++) {
+            this.paginate[i] = i + 1
+          }
         }).catch(error => console.log(error))
       }).catch(error => console.log(error))
     },
@@ -94,9 +101,24 @@ export default {
     deletarThreadResp (par) {
       axios.delete('https://tarefa-backend.herokuapp.com/DeleteThreadResp/' + par).then(res => {
         console.log(res)
-        axios.get('https://tarefa-backend.herokuapp.com/RespostasThread/' + this.$route.params.codigo).then(res => {
-          this.dadosrep = res.data
+        axios.get('https://tarefa-backend.herokuapp.com/RespostasThread/' + this.$route.params.codigo + '/1').then(res => {
+          this.dadosrep = res.data[0].dados
+          this.paginate = {}
+          for (var i = 0; i < res.data[0].paginate; i++) {
+            this.paginate[i] = i + 1
+          }
+          console.log(this.paginate)
         }).catch(error => console.log(error))
+      }).catch(error => console.log(error))
+    },
+    mudarpagina (par) {
+      axios.get('https://tarefa-backend.herokuapp.com/RespostasThread/' + this.$route.params.codigo + '/' + par).then(res => {
+        this.dadosrep = res.data[0].dados
+        this.paginate = {}
+        for (var i = 0; i < res.data[0].paginate; i++) {
+          this.paginate[i] = i + 1
+        }
+        console.log(this.paginate)
       }).catch(error => console.log(error))
     }
   },
@@ -104,9 +126,13 @@ export default {
     axios.get('https://tarefa-backend.herokuapp.com/DetalharThread/' + this.$route.params.codigo).then(res => {
       this.dados = res.data
     }).catch(error => console.log(error))
-    axios.get('https://tarefa-backend.herokuapp.com/RespostasThread/' + this.$route.params.codigo).then(res => {
-      this.dadosrep = res.data
-      console.log(this.dadosrep)
+    axios.get('https://tarefa-backend.herokuapp.com/RespostasThread/' + this.$route.params.codigo + '/1').then(res => {
+      this.dadosrep = res.data[0].dados
+      this.paginate = {}
+      for (var i = 0; i < res.data[0].paginate; i++) {
+        this.paginate[i] = i + 1
+      }
+      console.log(this.paginate)
     }).catch(error => console.log(error))
   }
 }

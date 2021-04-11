@@ -9,12 +9,17 @@
     <div class="threads" align="left">
       <table style="border-collapse: collapse;">
         <tr v-for="(perc,index) in dados" :key="index" >
-          <th class="bord" width="50%" align="left"><router-link :to="{ name: 'Detalhes', params: {codigo: perc.codigo}}"><font color=grey>{{perc.titulo}}</font></router-link></th>
+          <th class="bord" width="45%" align="left"><router-link :to="{ name: 'Detalhes', params: {codigo: perc.codigo}}"><font color=grey>{{perc.titulo}}</font></router-link></th>
           <th class="bord" width="10%" align="center"><router-link :to="{ name: 'Detalhes', params: {codigo: perc.codigo}}"><font size=2>details</font></router-link></th>
-          <th class="bord" width="10%" align="left"><router-link :to="{ name: 'Detalhes', params: {codigo: perc.codigo}}"><font size=2 color=black><b>{{perc.respostas}} replies</b></font></router-link></th>
+          <th class="bord" width="15%" align="right"><router-link :to="{ name: 'Detalhes', params: {codigo: perc.codigo}}"><font size=2 color=black><b>{{perc.respostas}} replies</b></font></router-link></th>
         </tr>
       </table>
     </div>
+    <table>
+      <tr>
+        <td v-for="(perc,index) in paginate" :key="index"><button v-on:click="mudarpagina(perc)">{{perc}}</button></td>
+      </tr>
+    </table>
   </div>
 </template>
 
@@ -24,14 +29,29 @@ export default {
   name: 'Threads',
   data () {
     return {
-      dados: []
+      dados: [],
+      paginate: {}
+    }
+  },
+  methods: {
+    mudarpagina (par) {
+      axios.get('https://tarefa-backend.herokuapp.com/listarthreads/' + par).then(res => {
+        this.dados = res.data[0].dados
+        this.paginate = {}
+        for (var i = 0; i < res.data[0].paginate; i++) {
+          this.paginate[i] = i + 1
+        }
+      }).catch(error => console.log(error))
     }
   },
   created: function () {
-    axios.get('https://tarefa-backend.herokuapp.com/listarthreads').then(res => {
-      this.dados = res.data
-      console.log(res)
-    }).catch(error => console.log(error))
+    axios.get('https://tarefa-backend.herokuapp.com/listarthreads/1').then(res => {
+      this.dados = res.data[0].dados
+      this.paginate = {}
+      for (var i = 0; i < res.data[0].paginate; i++) {
+        this.paginate[i] = i + 1
+      }
+    })
   }
 }
 </script>
